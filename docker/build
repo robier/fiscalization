@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+function buildDocker
+{
+    local -r dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    local -r projectRoot=$(readlink -f "${dir}/../")
+
+    local -r applicationName=$(cat ${dir}/projectName);
+
+    docker build --build-arg HOST_USER_ID=$(id -u) --build-arg HOST_GROUP_ID=$(id -g) ${projectRoot} -t ${applicationName} -f ${projectRoot}/docker/Dockerfile
+}
+
+buildDocker

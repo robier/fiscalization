@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+function runDocker
+{
+    local -r dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+    local -r applicationName=$(cat "${dir}/projectName");
+
+    if [[ $# -eq 0 ]]; then
+        docker run --rm -v $(pwd):/home/app/src -it ${applicationName} "sh"
+    else
+        docker run --rm -v $(pwd):/home/app/src -i ${applicationName} "$@"
+    fi
+}
+
+runDocker "$@"
