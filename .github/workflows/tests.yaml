@@ -1,0 +1,19 @@
+name: tests
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build application container
+        run: docker/build
+      - name: Install DEV dependencies
+        run: docker/run composer install
+      - name: Execute lint
+        run: docker/run composer lint
+      - name: Execute tests
+        run: docker/run composer test:coverage:clover
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          file: .cache/clover.xml
